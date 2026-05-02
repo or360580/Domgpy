@@ -1,27 +1,17 @@
+##Para empezqar tengamos la implementacion de la libreria solicitada.
+import networkx as nx
 import matplotlib.pyplot as plt
-import numpy as np
-
-def generar_grafica_aleatoria(puntos=100):
-    """
-    Genera una gráfica de caminata aleatoria.
-    """
-    # 1. Crear datos aleatorios
-    x = np.arange(puntos)
-    y = np.cumsum(np.random.randn(puntos)) # Suma acumulada para crear una línea continua
-
-    # 2. Configurar la estética de la gráfica
-    plt.figure(figsize=(10, 6))
-    plt.plot(x, y, label='Tendencia Aleatoria', color='teal', linewidth=2)
+## aqui hacemos una funcion para generar el grafo de forma aleatoria, dados los nodos y la probabilidad
+def generar_grafo_aleatorio(n_nodos, probabilidad):
+    G = nx.erdos_renyi_graph(n_nodos, probabilidad)
     
-    # 3. Añadir detalles
-    plt.title("Gráfica de Datos Aleatorios", fontsize=14)
-    plt.xlabel("Tiempo / Pasos")
-    plt.ylabel("Valor Acumulado")
-    plt.grid(True, linestyle='--', alpha=0.7)
-    plt.legend()
-
-    # 4. Mostrar la gráfica
+    ###En esta parte del codigo planeamos hacer que se haga la impresion del grafo 
+    plt.figure(figsize=(8, 6))
+    nx.draw(G, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500)
+    plt.title(f"Grafo Aleatorio (n={n_nodos}, p={probabilidad})")
     plt.show()
 
-if __name__ == "__main__":
-    generar_grafica_aleatoria(150)
+    return G
+
+###Este codigo lo podemos modificar para seleccionar el numero de nodos y la probabilidad de enlaece de nuestro grafo.
+mi_grafo = generar_grafo_aleatorio(15, 0.2)
