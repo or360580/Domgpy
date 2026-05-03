@@ -1,13 +1,14 @@
-import networkx as nx
+ import networkx as nx
 import random
 
 class GraphAnalyzer:
     """Clase para generar y analizar propiedades teóricas de gráficas."""
     
     def __init__(self, n_nodes: int, probability: float):
+        # CORRECCIÓN: Usar n_nodes (el parámetro de la función)
         self.n_nodes = n_nodes
         self.probability = probability
-        # Generar gráfica aleatoria Erdős-Rényi
+        # CORRECCIÓN: Usar self.n_nodes para generar el grafo
         self.G = nx.erdos_renyi_graph(n_nodes, probability)
 
     def get_domination_info(self):
@@ -17,7 +18,11 @@ class GraphAnalyzer:
 
     def get_clique_number(self):
         """Calcula el número de clan (clique number) de la gráfica."""
-        return nx.graph_clique_number(self.G)
+        # Nota: En versiones muy nuevas de NetworkX esto se movió a nx.approximation
+        try:
+            return nx.graph_clique_number(self.G)
+        except AttributeError:
+            return len(nx.approximation.max_clique(self.G))
 
     def get_coloring_info(self):
         """Calcula la coloración greedy y el número cromático."""
@@ -26,7 +31,7 @@ class GraphAnalyzer:
         return coloring, chromatic_number
 
     def solve_example(self):
-        """Método unificado para retornar los resultados en un formato estructurado."""
+        """Método unificado para retornar los resultados."""
         dom_set, dom_num = self.get_domination_info()
         coloring, chrom_num = self.get_coloring_info()
         clique_num = self.get_clique_number()
@@ -42,9 +47,19 @@ class GraphAnalyzer:
         }
 
 def solve_example(data):
-    """Función de conveniencia para compatibilidad con tus tests."""
+    """Función para compatibilidad con tests."""
     if not data:
         return []
-    # Usamos el primer valor como n_nodes y una probabilidad fija o aleatoria
     analyzer = GraphAnalyzer(n_nodes=len(data), probability=0.5)
     return analyzer.solve_example()
+
+# --- BLOQUE DE EJECUCIÓN (Fuera de las funciones) ---
+if __name__ == "__main__":
+    n_nodos = 10
+    p = 0.4
+    analizador = GraphAnalyzer(n_nodos, p)
+    resultados = analizador.solve_example()
+
+    print("=== Resultados del Análisis de Gráfica ===")
+    for llave, valor in resultados.items():
+        print(f"{llave.replace('_', ' ').capitalize()}: {valor}")
