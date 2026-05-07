@@ -1,3 +1,4 @@
+"""En este codigo de prueba ya haremos directamente la implementacion de las 3 librerias que consideraremos usar para el codigo, una contiene los algoritmos de resolucion, la otra nos dibujara el grafico y la ultima es para generar de forma aleatoria."""
 import networkx as nx
 import matplotlib.pyplot as plt
 import random

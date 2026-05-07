@@ -32,7 +32,6 @@ class AnalizadorGrafico:
         return coloring, chromatic_number
 
     def solve_example(self):
-        """Método unificado para retornar los resultados."""
         dom_set, dom_num = self.get_domination_info()
         coloring, chrom_num = self.get_coloring_info()
         clique_num = self.get_clique_number()
@@ -48,7 +47,7 @@ class AnalizadorGrafico:
         }
 
 def solve_example(data):
-    """Función para compatibilidad con tests."""
+    """Aqui hacemos el codigo analizador."""
     if not data:
         return []
     analyzer = AnalizadorGrafico(n_nodes=len(data), probability=0.5)
