@@ -1,3 +1,4 @@
+"""Esperemos este sea ek ultimo test(esperemos) del codigo para ver si es funcional nuestro codigo."""
 import networkx as nx
 import matplotlib.pyplot as plt
 import random
@@ -23,7 +24,7 @@ class GraphAnalyzer:
             return len(nx.approximation.max_clique(self.G))
 
     def get_coloring_info(self):
-        """Calcula la coloración y el número cromático."""
+        """Calculo de la coloración y el número cromático."""
         coloring = nx.coloring.greedy_color(self.G, strategy="largest_first")
         chromatic_number = max(coloring.values()) + 1 if coloring else 0
         return coloring, chromatic_number
@@ -32,18 +33,16 @@ class GraphAnalyzer:
         """Genera una ventana visual con la gráfica coloreada."""
         coloring, _ = self.get_coloring_info()
         
-        # Convertir el diccionario de colores a una lista para Matplotlib
-        # Si un nodo no tiene color (grafo vacío), usamos un default
         node_colors = [coloring.get(node, 0) for node in self.G.nodes()]
         
         plt.figure(figsize=(10, 7))
-        pos = nx.spring_layout(self.G) # Algoritmo para posicionar nodos
+        pos = nx.spring_layout(self.G)
         
         nx.draw(
             self.G, pos, 
             with_labels=True, 
             node_color=node_colors, 
-            cmap=plt.cm.rainbow, # Usa un espectro de colores para la coloración
+            cmap=plt.cm.rainbow,
             node_size=600,
             edge_color='lightgray'
         )
