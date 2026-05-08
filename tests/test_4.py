@@ -32,19 +32,16 @@ class GraphAnalyzer:
     def show_graph(self, title="Análisis de Gráfica Aleatoria"):
         """Genera una ventana visual con la gráfica coloreada."""
         coloring, _ = self.get_coloring_info()
-        
-        # Convertir el diccionario de colores a una lista para Matplotlib
-        # Si un nodo no tiene color (grafo vacío), usamos un default
         node_colors = [coloring.get(node, 0) for node in self.G.nodes()]
         
         plt.figure(figsize=(10, 7))
-        pos = nx.spring_layout(self.G) # Algoritmo para posicionar nodos
+        pos = nx.spring_layout(self.G)
         
         nx.draw(
             self.G, pos, 
             with_labels=True, 
             node_color=node_colors, 
-            cmap=plt.cm.rainbow, # Usa un espectro de colores para la coloración
+            cmap=plt.cm.rainbow,
             node_size=600,
             edge_color='lightgray'
         )
@@ -73,12 +70,10 @@ if __name__ == "__main__":
     p = 0.3
     
     analizador = GraphAnalyzer(n_nodos, p)
-    
-    # 1. Mostrar datos en consola
     resultados = analizador.solve_example()
     print("=== Resultados del Análisis ===")
     for llave, valor in resultados.items():
         print(f"{llave.capitalize()}: {valor}")
     
-    # 2. MOSTRAR LA GRÁFICA
+    # 2. IMPRESION DE LA GRÁFICA
     analizador.show_graph(f"Grafo Aleatorio (n={n_nodos}, p={p})")
