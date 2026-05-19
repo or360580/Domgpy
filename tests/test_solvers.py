@@ -1,3 +1,5 @@
+import unittest
+import networkx as nx
 from Dompy.solvers import GraphAnalyzer
 
 class TestGraphAnalyzer(unittest.TestCase):
@@ -69,3 +71,30 @@ class TestGraphAnalyzer(unittest.TestCase):
                 colores[u], colores[v],
                 f"Conflicto de coloración: los nodos conectados {u} y {v} comparten el color {colores[u]}."
             )
+    def test_solve_example(self):
+        """Verifica que el método solve_example retorne la estructura de datos unificada correcta."""
+        resultados = self.analizador.solve_example()
+        
+        # Asegurar que devuelva un diccionario
+        self.assertIsInstance(resultados, dict, "solve_example debe retornar un diccionario.")
+        
+        # Verificar la existencia de todas las llaves esperadas en el reporte unificado
+        llaves_esperadas = {
+            "nodos", "aristas", "conjunto_dominacion", 
+            "numero_dominacion", "numero_clan", "numero_cromatico"
+        }
+        self.assertTrue(llaves_esperadas.issubset(resultados.keys()), "El diccionario de resultados no contiene todas las llaves requeridas.")
+        
+        # Validar que los valores internos sigan las propiedades del Grafo de Petersen
+        self.assertEqual(resultados["nodos"], 10, "El valor de 'nodos' en solve_example debe ser 10.")
+        self.assertEqual(resultados["aristas"], 15, "El valor de 'aristas' en solve_example debe ser 15.")
+        self.assertEqual(resultados["numero_dominacion"], 3, "El valor de 'numero_dominacion' en solve_example debe ser 3.")
+        self.assertEqual(resultados["numero_clan"], 2, "El valor de 'numero_clan' en solve_example debe ser 2.")
+        self.assertEqual(resultados["numero_cromatico"], 3, "El valor de 'numero_cromatico' en solve_example debe ser 3.")
+        
+        # Validar que el conjunto de dominación devuelto sea realmente dominante
+        self.assertTrue(
+            self.analizador.is_dominating_set(resultados["conjunto_dominacion"]),
+            "El conjunto dentro de 'conjunto_dominacion' debe dominar al grafo."
+        )
+            
