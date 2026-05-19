@@ -49,3 +49,5 @@ En el ejemplo anterior, γ(G) = 2 porque:
 - **Redes de vigilancia**: Posicionamiento mínimo de cámaras
 - **Redes informáticas**: Ubicación óptima de servidores
 - **Protección de sistemas**: Cobertura mínima de nodos críticos 
+
+Por ultimo tomamos en el codigo que tome una grafica de peterson para el analisis del mismo y en base a este ver si el codigo por medio de Backtracking resuelve nuestro problema. 
