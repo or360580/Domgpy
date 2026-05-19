@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
-class GraphAnalyzer:
+class AnGrap:
     """Clase para generar, analizar y visualizar propiedades de gráficas."""
     
     def __init__(self, n_nodes: int, probability: float):
@@ -32,6 +32,7 @@ class GraphAnalyzer:
     def show_graph(self, title="Análisis de Gráfica Aleatoria"):
         """Genera una ventana visual con la gráfica coloreada."""
         coloring, _ = self.get_coloring_info()
+        
         node_colors = [coloring.get(node, 0) for node in self.G.nodes()]
         
         plt.figure(figsize=(10, 7))
@@ -69,11 +70,13 @@ if __name__ == "__main__":
     n_nodos = 12
     p = 0.3
     
-    analizador = GraphAnalyzer(n_nodos, p)
+    analizador = AnGrap(n_nodos, p)
+    
+    # 1. Mostrar datos en consola
     resultados = analizador.solve_example()
     print("=== Resultados del Análisis ===")
     for llave, valor in resultados.items():
         print(f"{llave.capitalize()}: {valor}")
     
-    # 2. IMPRESION DE LA GRÁFICA
+    # 2. MOSTRAR LA GRÁFICA
     analizador.show_graph(f"Grafo Aleatorio (n={n_nodos}, p={p})")
