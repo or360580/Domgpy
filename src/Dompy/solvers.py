@@ -1,13 +1,12 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-"""Crearemos aqui una clase para nuestra funcion de analisis del grafico o Grafo."""
-class Grap_An:
-
-    def  __init__(self):
-        """Mandamos a llamar un grafico de Peterson de nuestra libreria Networkx"""
-        self.G = nx.peterson_graph()
-        self.n_nodes = self.G.nnumber_of_nodes()
+class GraphAnalyzer:
+    """Clase para generar, analizar y visualizar propiedades del Grafo de Petersen."""
+    
+    def __init__(self):
+        self.G = nx.petersen_graph()
+        self.n_nodes = self.G.number_of_nodes()
 
     def is_dominating_set(self, candidate_set):
         """Verifica si un conjunto de nodos es un conjunto dominante."""
@@ -17,68 +16,54 @@ class Grap_An:
         return len(covered) == self.n_nodes
 
     def get_domination_info(self):
-        """Calcula el conjunto y número de dominación usando Backtracking."""
-        # Todos los nodos en el grafo de Petersen tienen grado 3, por lo que el orden
-        # inicial es simplemente la lista de nodos del 0 al 9.
+        """Calculo del conjunto y número de dominación usando Backtracking."""
         nodes = list(self.G.nodes())
         
-        best_dom_set = nodes[:]  # Inicialmente, el peor caso (todos los nodos)
+        best_dom_set = nodes[:]
         min_size = len(nodes)
 
         def backtrack(index, current_set):
             nonlocal best_dom_set, min_size
-
-            # Poda (Pruning): Si el conjunto actual ya es igual o mayor al mejor encontrado, 
-            # no tiene sentido seguir explorando esta rama.
             if len(current_set) >= min_size:
                 return
 
-            # Si el conjunto actual es dominante, guardamos el nuevo mínimo
             if self.is_dominating_set(current_set):
                 best_dom_set = current_set.copy()
                 min_size = len(current_set)
                 return
 
-            # Si ya revisamos todos los nodos, terminamos esta rama
             if index == len(nodes):
                 return
 
-            # Opción 1: Incluir el nodo actual en el conjunto
             current_set.append(nodes[index])
             backtrack(index + 1, current_set)
-            current_set.pop()  # Retroceder (Backtrack)
+            current_set.pop()
 
-            # Opción 2: No incluir el nodo actual
             backtrack(index + 1, current_set)
 
-        # Iniciar el backtracking desde el índice 0 con un conjunto vacío
         backtrack(0, [])
         return best_dom_set, min_size
 
     def get_clique_number(self):
-        """Calcula el número de clan (clique)."""
+        """Aqui se Calcula el número de clan (clique), no es parte del problema inicial pero lo quisimos incluir."""
         try:
             return nx.graph_clique_number(self.G)
         except AttributeError:
             return len(nx.approximation.max_clique(self.G))
 
     def get_coloring_info(self):
-        """Calcula la coloración y el número cromático."""
+        """Aqui se Calcula la coloración y el número cromático, al igual que el calculo anterior se quiso incluir mas no es parte del problema a tratar. """
         coloring = nx.coloring.greedy_color(self.G, strategy="largest_first")
         chromatic_number = max(coloring.values()) + 1 if coloring else 0
         return coloring, chromatic_number
 
     def show_graph(self, title="Análisis del Grafo de Petersen"):
-        """Genera una ventana visual con la clásica forma del Grafo de Petersen."""
+        """en esta Generamos una ventana visual con la clásica forma del Grafo de Petersen."""
         coloring, _ = self.get_coloring_info()
         node_colors = [coloring.get(node, 0) for node in self.G.nodes()]
         
         plt.figure(figsize=(8, 8))
         
-        # Para dibujar el Grafo de Petersen en su forma icónica,
-        # posicionamos los nodos en dos capas concéntricas (shells):
-        # Capa exterior: nodos [0, 1, 2, 3, 4]
-        # Capa interior: nodos [5, 6, 7, 8, 9]
         pos = nx.shell_layout(self.G, nlist=[[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]])
         
         nx.draw(
@@ -108,7 +93,7 @@ class Grap_An:
             "aristas": self.G.number_of_edges(),
             "conjunto_dominacion": dom_set,
             "numero_dominacion": dom_num,
-            "numero_clan": clique_num,impor
+            "numero_clan": clique_num,
             "numero_cromatico": chrom_num
         }
 
@@ -127,4 +112,4 @@ if __name__ == "__main__":
     
     # 2. Mostrar la gráfica de Petersen con su dibujo geométrico clásico
     print("\nGenerando visualización geométrica del Grafo de Petersen...")
-    analizador.show_graph("El Grafo de Petersen (Coloración Mínima)")    
+    analizador.show_graph("El Grafo de Petersen (Coloración Mínima)")
